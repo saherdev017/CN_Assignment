@@ -1,0 +1,30 @@
+13:00:44 [PEER peer_6001] Initialized  quorum=2/3
+13:00:44 [PEER peer_6001] Listening on 127.0.0.1:6001
+13:00:44 [PEER peer_6001] Registering with seed 127.0.0.1:5001
+13:00:44 [PEER peer_6001] Registered with seed 127.0.0.1:5001
+13:00:44 [PEER peer_6001] Peer list from 127.0.0.1:5001: []
+13:00:44 [PEER peer_6001] Registering with seed 127.0.0.1:5002
+13:00:44 [PEER peer_6001] Registered with seed 127.0.0.1:5002
+13:00:44 [PEER peer_6001] Peer list from 127.0.0.1:5002: []
+13:00:44 [PEER peer_6001] Registering with seed 127.0.0.1:5003
+13:00:44 [PEER peer_6001] Registered with seed 127.0.0.1:5003
+13:00:44 [PEER peer_6001] Peer list from 127.0.0.1:5003: []
+13:00:44 [PEER peer_6001] Registered with 3/2 required seeds
+13:00:44 [PEER peer_6001] Union peer list has 0 entries: []
+13:00:44 [PEER peer_6001] Selected neighbours (power-law): []
+13:00:46 [PEER peer_6001] Inbound HELLO from ('127.0.0.1', 6002)
+13:00:48 [PEER peer_6001] Generated gossip #1: 1772004648.336926:127.0.0.1:1
+13:00:49 [PEER peer_6001] Inbound HELLO from ('127.0.0.1', 6003)
+13:00:53 [PEER peer_6001] Generated gossip #2: 1772004653.338737:127.0.0.1:2
+13:00:58 [PEER peer_6001] Generated gossip #3: 1772004658.340271:127.0.0.1:3
+13:01:03 [PEER peer_6001] Generated gossip #4: 1772004663.341601:127.0.0.1:4
+13:01:08 [PEER peer_6001] Generated gossip #5: 1772004668.343387:127.0.0.1:5
+13:01:13 [PEER peer_6001] Generated gossip #6: 1772004673.344439:127.0.0.1:6
+13:01:18 [PEER peer_6001] Generated gossip #7: 1772004678.345283:127.0.0.1:7
+13:01:23 [PEER peer_6001] Generated gossip #8: 1772004683.346428:127.0.0.1:8
+13:01:28 [PEER peer_6001] Generated gossip #9: 1772004688.347723:127.0.0.1:9
+13:01:33 [PEER peer_6001] Generated gossip #10: 1772004693.349688:127.0.0.1:10
+13:02:03 [PEER peer_6001] Initialized  quorum=2/3
+13:02:03 [PEER peer_6001] Listening on 127.0.0.1:6001
+13:02:03 [PEER peer_6001] Registering with seed 127.0.0.1:5003
+13:11:27 [PEER peer_6001] Seed ('127.0.0.1', 5001) connection closed

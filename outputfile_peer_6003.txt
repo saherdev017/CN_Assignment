@@ -1,0 +1,3 @@
+13:02:05 [PEER peer_6003] Initialized  quorum=2/3
+13:02:05 [PEER peer_6003] Listening on 127.0.0.1:6003
+13:02:05 [PEER peer_6003] Registering with seed 127.0.0.1:5003

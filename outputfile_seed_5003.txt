@@ -1,0 +1,29 @@
+13:00:20 [SEED seed_5003] Initialized  n_seeds=3  quorum=2
+13:00:20 [SEED seed_5003] Listening on 127.0.0.1:5003
+13:00:20 [SEED seed_5003] Seed 127.0.0.1:5002 connected (inbound)
+13:00:23 [SEED seed_5003] Seed 127.0.0.1:5001 connected (inbound)
+13:00:44 [SEED seed_5003] REGISTER_REQUEST ('127.0.0.1', 6001)  req_id=reg_127.0.0.1_6001_4355.1286
+13:00:44 [SEED seed_5003] Broadcasting REGISTER_PROPOSAL to 2 peer seed(s)  req_id=reg_127.0.0.1_6001_4355.1286
+13:00:44 [SEED seed_5003] REGISTER_VOTE req_id=reg_127.0.0.1_6001_4355.1286 voter=127.0.0.1:5001 vote=True
+13:00:44 [SEED seed_5003] REGISTER_VOTE req_id=reg_127.0.0.1_6001_4355.1286 voter=127.0.0.1:5002 vote=True
+13:00:44 [SEED seed_5003] Peer ('127.0.0.1', 6001) REGISTERED  yes=2  PL_size=1
+13:00:46 [SEED seed_5003] REGISTER_REQUEST ('127.0.0.1', 6002)  req_id=reg_127.0.0.1_6002_4357.4697
+13:00:46 [SEED seed_5003] Broadcasting REGISTER_PROPOSAL to 2 peer seed(s)  req_id=reg_127.0.0.1_6002_4357.4697
+13:00:46 [SEED seed_5003] REGISTER_VOTE req_id=reg_127.0.0.1_6002_4357.4697 voter=127.0.0.1:5001 vote=True
+13:00:46 [SEED seed_5003] REGISTER_VOTE req_id=reg_127.0.0.1_6002_4357.4697 voter=127.0.0.1:5002 vote=True
+13:00:46 [SEED seed_5003] Peer ('127.0.0.1', 6002) REGISTERED  yes=2  PL_size=2
+13:00:49 [SEED seed_5003] REGISTER_REQUEST ('127.0.0.1', 6003)  req_id=reg_127.0.0.1_6003_4359.8310
+13:00:49 [SEED seed_5003] Broadcasting REGISTER_PROPOSAL to 2 peer seed(s)  req_id=reg_127.0.0.1_6003_4359.8310
+13:00:49 [SEED seed_5003] REGISTER_VOTE req_id=reg_127.0.0.1_6003_4359.8310 voter=127.0.0.1:5001 vote=True
+13:00:49 [SEED seed_5003] REGISTER_VOTE req_id=reg_127.0.0.1_6003_4359.8310 voter=127.0.0.1:5002 vote=True
+13:00:49 [SEED seed_5003] Peer ('127.0.0.1', 6003) REGISTERED  yes=2  PL_size=3
+13:00:51 [SEED seed_5003] REGISTER_REQUEST ('127.0.0.1', 6004)  req_id=reg_127.0.0.1_6004_4362.2487
+13:00:51 [SEED seed_5003] Broadcasting REGISTER_PROPOSAL to 2 peer seed(s)  req_id=reg_127.0.0.1_6004_4362.2487
+13:00:51 [SEED seed_5003] REGISTER_VOTE req_id=reg_127.0.0.1_6004_4362.2487 voter=127.0.0.1:5002 vote=True
+13:00:51 [SEED seed_5003] REGISTER_VOTE req_id=reg_127.0.0.1_6004_4362.2487 voter=127.0.0.1:5001 vote=True
+13:00:51 [SEED seed_5003] Peer ('127.0.0.1', 6004) REGISTERED  yes=2  PL_size=4
+13:01:58 [SEED seed_5003] Initialized  n_seeds=3  quorum=2
+13:01:58 [SEED seed_5003] Listening on 127.0.0.1:5003
+13:02:00 [SEED seed_5003] Seed 127.0.0.1:5002 connected (inbound)
+13:02:00 [SEED seed_5003] Seed 127.0.0.1:5001 connected (inbound)
+13:02:03 [SEED seed_5003] REGISTER_REQUEST ('127.0.0.1', 6001) — already in PL, ACK
