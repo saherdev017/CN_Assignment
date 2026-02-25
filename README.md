@@ -131,8 +131,8 @@ Press `Ctrl+C` on any running Seed or Peer. The application will catch the `Keyb
 ```
                     ┌─────────────────────────────┐
                     │         Seed Cluster         │
-                    │  [Seed 5001]──[Seed 5002]   │
-                    │       └──────[Seed 5003]     │
+                    │  [Seed 5010]──[Seed 5012]   │
+                    │       └──────[Seed 5011]     │
                     │   (consensus mesh — TCP)      │
                     └─────────┬───────────────┬────┘
                               │               │

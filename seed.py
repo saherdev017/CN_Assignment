@@ -1,30 +1,25 @@
 """
-seed.py — Seed Node for Gossip-based P2P Network
-=================================================
-Usage:
-    python seed.py <IP> <Port> [config.csv]
+ Seed Node for Gossip based P2P Network
 
-Seed-to-seed communication model
-----------------------------------
-Each seed dials every other seed whose port is GREATER than its own
-(so each pair has exactly one connection: the lower-port seed dials the
-higher-port one).
+Each seed dials every other seed whose port > its own
+(so each pair has exactly 1 conn. : lower port seed dials 
+higher port one)
 
 The dialling seed:
-  1. Sends SEED_HELLO to identify itself.
-  2. Stores the outbound socket in seed_channels.
-  3. Reads from that socket in a loop (_route_message).
+  1. Sends SEED_HELLO to identify itself
+  2. Stores the outbound socket in seed_channels
+  3. Reads from that socket in a loop (_route_msg)
 
 The accepting seed:
-  1. Receives SEED_HELLO in _handle_connection.
-  2. Stores the accepted socket in seed_channels.
-  3. Reads from it in the _handle_connection loop (_route_message).
+  1. Receives SEED_HELLO in _handle_conn
+  2. Stores the accepted socket in seed_channels
+  3. Reads from it in the _handle_connection loop (_route_message)
 
-So every seed-to-seed socket is read by BOTH ends.  Sending a proposal on
-seed_channels[X] writes into X's reader loop, and X's reply comes back on
+So every seed2seed socket is read by BOTH ends.Sending a proposal on
+seed_channels[X] writes into X's reader loop and X's reply comes back on
 the same socket to the proposer's reader loop.
 
-Protocol: 4-byte big-endian length + JSON payload.
+Protocol: 4 byte big endian length + JSON payload.
 """
 
 import sys
@@ -37,15 +32,11 @@ import threading
 import time
 import logging
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Framing helpers
-# ──────────────────────────────────────────────────────────────────────────────
-
 HEADER_SIZE = 4
 
-
 def send_msg(sock: socket.socket, data: dict) -> bool:
-    """Serialize *data* to JSON, prefix with 4-byte length, send atomically."""
+    """Serialize data to JSON, prefix with 4 byte len send atomically"""
     try:
         payload = json.dumps(data).encode("utf-8")
         sock.sendall(struct.pack(">I", len(payload)) + payload)
@@ -55,13 +46,13 @@ def send_msg(sock: socket.socket, data: dict) -> bool:
 
 
 def recv_msg(sock: socket.socket):
-    """Receive one length-prefixed JSON message. Returns None on error/close."""
+    """Receive 1 len prefixed JSON msg. Returns None on error/close"""
     try:
         hdr = _recv_exact(sock, HEADER_SIZE)
         if not hdr:
             return None
-        n = struct.unpack(">I", hdr)[0]
-        body = _recv_exact(sock, n)
+        n= struct.unpack(">I", hdr)[0]
+        body= _recv_exact(sock, n)
         if not body:
             return None
         return json.loads(body.decode("utf-8"))
@@ -78,17 +69,9 @@ def _recv_exact(sock: socket.socket, n: int):
         buf += chunk
     return buf
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# SeedNode
-# ──────────────────────────────────────────────────────────────────────────────
-
+# SeedNode is consensus based peer registration & dead node removal
 class SeedNode:
     """
-    Seed node: consensus-based peer registration and dead-node removal.
-
-    Data structures
-    ---------------
     peer_list       : dict[(ip,port)] -> {degree, registered_at}
     pending_reg     : dict[req_id]    -> {peer, votes, conn, decided}
     dead_reports    : dict[(ip,port)] -> set of reporter strings
@@ -97,8 +80,8 @@ class SeedNode:
     """
 
     def __init__(self, host: str, port: int, config_path: str = "config.csv"):
-        self.host = host
-        self.port = port
+        self.host =host
+        self.port =port
         self.id   = f"{host}:{port}"
 
         self.all_seeds: list = []
@@ -110,26 +93,26 @@ class SeedNode:
         self.peer_list: dict = {}
         self.pl_lock = threading.Lock()
 
-        # Consensus: registration
+        # Consensus is registration
         self.pending_reg: dict = {}
         self.pr_lock = threading.Lock()
 
-        # Dead-node buffering
+        # Dead node buffering
         self.dead_reports: dict = {}
         self.dr_lock = threading.Lock()
 
-        # Consensus: removal
+        # Consensus  removal
         self.pending_rem: dict = {}
         self.prem_lock = threading.Lock()
 
-        # Seed-to-seed channels (both accepted and dialled sockets stored here)
+        # Seed2seed channels (both accepted & dialled sockets stored here)
         self.seed_channels: dict = {}
         self.sc_lock = threading.Lock()
 
         self._setup_logger()
         self.log(f"Initialized  n_seeds={self.n_seeds}  quorum={self.quorum}")
 
-    # ── Config ──────────────────────────────────────────────────────────────────
+    # Config 
 
     def _load_config(self, path: str):
         if not os.path.exists(path):
@@ -141,8 +124,7 @@ class SeedNode:
                 if len(row) >= 2:
                     self.all_seeds.append((row[0], int(row[1])))
 
-    # ── Logger ──────────────────────────────────────────────────────────────────
-
+    # Logger 
     def _setup_logger(self):
         self.logger = logging.getLogger(f"seed_{self.port}")
         self.logger.setLevel(logging.DEBUG)
@@ -158,8 +140,7 @@ class SeedNode:
     def log(self, msg: str):
         self.logger.info(msg)
 
-    # ── Startup ─────────────────────────────────────────────────────────────────
-
+    # Startup
     def start(self):
         srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -167,9 +148,8 @@ class SeedNode:
         srv.listen(100)
         self.log(f"Listening on {self.host}:{self.port}")
 
-        threading.Thread(target=self._accept_loop, args=(srv,), daemon=True).start()
-
-        # Wait for all seeds to start listening, then dial higher-port seeds
+        threading.Thread(target=self._accept_loop, args=(srv,),daemon=True).start()
+        # Wait for all seeds to start listening then dial higher port seeds
         time.sleep(2)
         self._dial_higher_port_seeds()
 
@@ -180,8 +160,7 @@ class SeedNode:
             self.log("Shutting down.")
             srv.close()
 
-    # ── Accept loop ─────────────────────────────────────────────────────────────
-
+    # Accept loop 
     def _accept_loop(self, srv: socket.socket):
         while True:
             try:
@@ -191,8 +170,7 @@ class SeedNode:
             except Exception:
                 break
 
-    # ── Dial peer seeds (lower-port accepts, higher-port is dialled) ────────────
-
+    #Dial peer seeds (lower port accepts, higher port is dialled)
     def _dial_higher_port_seeds(self):
         """Dial only seeds with port > self.port (avoids duplicate pairs)."""
         for (ip, port) in self.all_seeds:
@@ -214,7 +192,7 @@ class SeedNode:
                 with self.sc_lock:
                     self.seed_channels[peer_id] = s
                 self.log(f"Dialled seed {ip}:{port}")
-                # Read loop — receive proposals/votes sent back to us
+                # Read loop is receive proposals/votes sent back to us
                 while True:
                     msg = recv_msg(s)
                     if msg is None:
@@ -229,10 +207,9 @@ class SeedNode:
                 pass
             time.sleep(3 + attempt)
 
-    # ── Connection handler ───────────────────────────────────────────────────────
-
+    # Connection handler 
     def _handle_connection(self, conn: socket.socket):
-        """Receive messages from one accepted connection (peer or seed)."""
+        """Receive msgs from 1 accepted connec (peer or seed)."""
         peer_seed_id = None
         while True:
             msg = recv_msg(conn)
@@ -257,10 +234,9 @@ class SeedNode:
                 if self.seed_channels.get(peer_seed_id) is conn:
                     del self.seed_channels[peer_seed_id]
 
-    # ── Message routing ──────────────────────────────────────────────────────────
-
+    # Message routing
     def _route_message(self, msg: dict, conn: socket.socket):
-        """Dispatch received message to the correct handler."""
+        """Dispatch received msg to the correct handler"""
         t = msg.get("type", "")
         if   t == "REGISTER_REQUEST":  self._on_register_request(msg, conn)
         elif t == "REGISTER_PROPOSAL": self._on_register_proposal(msg, conn)
@@ -270,7 +246,7 @@ class SeedNode:
         elif t == "DEAD_PROPOSAL":     self._on_dead_proposal(msg, conn)
         elif t == "DEAD_VOTE":         self._on_dead_vote(msg)
         elif t == "DEAD_CONFIRMED":
-            # Another seed committed removal before us — sync our PL
+            # Another seed committed removal before us, sync our PL
             dead_key = (msg["dead_ip"], int(msg["dead_port"]))
             with self.pl_lock:
                 if dead_key in self.peer_list:
@@ -278,8 +254,7 @@ class SeedNode:
             self.log(f"Synced removal of {dead_key} via DEAD_CONFIRMED from peer seed")
         # Unknown messages are silently ignored
 
-    # ── Broadcast helpers ────────────────────────────────────────────────────────
-
+    # Broadcast helpers
     def _broadcast_to_seeds(self, msg: dict):
         """Send msg to all connected peer seeds."""
         with self.sc_lock:
@@ -287,8 +262,7 @@ class SeedNode:
         for s in targets:
             send_msg(s, msg)
 
-    # ── Registration consensus ───────────────────────────────────────────────────
-
+    # Registration consensus
     def _on_register_request(self, msg: dict, conn: socket.socket):
         """Peer asks to join. This seed becomes the proposer."""
         peer_ip, peer_port = msg["ip"], int(msg["port"])
@@ -307,7 +281,7 @@ class SeedNode:
         with self.pr_lock:
             self.pending_reg[req_id] = {
                 "peer": peer_key,
-                "votes": {self.id: True},   # self-vote
+                "votes": {self.id: True},   # self vote
                 "conn": conn,
                 "decided": False,
             }
@@ -386,8 +360,7 @@ class SeedNode:
         self.log(f"Registration TIMEOUT req_id={req_id}")
         send_msg(conn, {"type": "REGISTER_RESPONSE", "status": "timeout"})
 
-    # ── Peer list ────────────────────────────────────────────────────────────────
-
+    # Peer list 
     def _on_peer_list_request(self, msg: dict, conn: socket.socket):
         requester = (msg.get("ip", ""), int(msg.get("port", 0)))
         self.log(f"PEER_LIST_REQUEST from {requester}")
@@ -405,22 +378,23 @@ class SeedNode:
                     for (ip, port), m in self.peer_list.items()
                     if (ip, port) != exclude]
 
-    # ── Dead-node consensus ──────────────────────────────────────────────────────
-
+    # Dead node consensus 
     def _on_dead_report(self, msg: dict):
         dead_key = (msg["dead_ip"], int(msg["dead_port"]))
         reporter = msg["reporter"]
         self.log(f"DEAD_REPORT  dead={dead_key}  reporter={reporter}")
+        # The peers already achieved consensus, so the seed only needs ONE report 
+        # to trigger the seed level vote.
         with self.dr_lock:
             if dead_key not in self.dead_reports:
                 self.dead_reports[dead_key] = set()
-            self.dead_reports[dead_key].add(reporter)
-            count = len(self.dead_reports[dead_key])
-            if count >= self.quorum:
-                # Reset so we don't re-trigger
-                self.dead_reports[dead_key] = set()
-            else:
+            
+            # If we have already proposed this recently, don't spam the network
+            if reporter in self.dead_reports[dead_key]:
                 return
+                
+            self.dead_reports[dead_key].add(reporter)
+            
         self._propose_removal(dead_key)
 
     def _propose_removal(self, dead_key: tuple):
@@ -499,13 +473,10 @@ class SeedNode:
                 self.log(f"Removal TIMEOUT req_id={req_id}")
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Entry point
-# ──────────────────────────────────────────────────────────────────────────────
-
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Usage: python seed.py <IP> <Port> [config.csv]")
         sys.exit(1)
-    cfg = sys.argv[3] if len(sys.argv) > 3 else "config.csv"
+    cfg= sys.argv[3] if len(sys.argv) > 3 else "config.csv"
     SeedNode(sys.argv[1], int(sys.argv[2]), cfg).start()

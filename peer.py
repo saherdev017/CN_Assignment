@@ -1,18 +1,14 @@
 """
-peer.py — Peer Node for Gossip-based P2P Network
-=================================================
-Usage:
-    python peer.py <IP> <Port> [config.csv]
+Peer Node for Gossipbased P2P Network
 
-Key design fixes vs initial version:
+Key design features:
   - Peer list is taken directly from REGISTER_RESPONSE (no separate PEER_LIST_REQUEST).
   - The seed socket is handed to a background listener ONLY after all synchronous
-    request/response exchanges are complete, eliminating read races.
+    req/response exchanges are complete, eliminating read races.
   - Ping failures AND missing PONG replies both increment the missed-ping counter.
-  - Peer-level suspicion sends SUSPECT_REQUEST to all neighbours except the suspect
-    and waits for SUSPECT_RESPONSE; quorum of confirmations triggers DEAD_REPORT.
 
-Protocol: 4-byte big-endian length + JSON payload (same as seed.py)
+Protocol: 4 byte big endian length + JSON payload 
+to use:  python peer.py <IP> <Port> 
 """
 
 import sys
@@ -29,29 +25,24 @@ import logging
 import subprocess
 import platform
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Framing
-# ──────────────────────────────────────────────────────────────────────────────
-
 HEADER_SIZE = 4
 
-
-def send_msg(sock: socket.socket, data: dict) -> bool:
+def send_msg(sock: socket.socket,data: dict) -> bool:
     try:
-        payload = json.dumps(data).encode()
-        sock.sendall(struct.pack(">I", len(payload)) + payload)
+        payload= json.dumps(data).encode()
+        sock.sendall(struct.pack(">I", len(payload)) +payload)
         return True
     except Exception:
         return False
 
-
 def recv_msg(sock: socket.socket):
     try:
-        raw = _recv_exact(sock, HEADER_SIZE)
+        raw= _recv_exact(sock,HEADER_SIZE)
         if not raw:
             return None
-        n = struct.unpack(">I", raw)[0]
-        raw = _recv_exact(sock, n)
+        n= struct.unpack(">I", raw)[0]
+        raw= _recv_exact(sock, n)
         if not raw:
             return None
         return json.loads(raw)
@@ -62,132 +53,117 @@ def recv_msg(sock: socket.socket):
 def _recv_exact(sock: socket.socket, n: int):
     buf = b""
     while len(buf) < n:
-        chunk = sock.recv(n - len(buf))
+        chunk= sock.recv(n - len(buf))
         if not chunk:
             return None
-        buf += chunk
+        buf+= chunk
     return buf
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# System-level ICMP ping helper
-# ──────────────────────────────────────────────────────────────────────────────
-
+# System level ICMP ping helper
 def system_ping(host: str) -> bool:
     """Return True if host replies to one ICMP ping within 1 s."""
-    if platform.system().lower() == "windows":
-        cmd = ["ping", "-n", "1", "-w", "1000", host]
+    if platform.system().lower()== "windows":
+        cmd= ["ping", "-n","1", "-w","1000",host]
     else:
-        cmd = ["ping", "-c", "1", "-W", "1", host]
+        cmd= ["ping", "-c","1", "-W","1",host]
     try:
-        r = subprocess.run(cmd, stdout=subprocess.DEVNULL,
+        r= subprocess.run(cmd, stdout=subprocess.DEVNULL,
                            stderr=subprocess.DEVNULL, timeout=3)
         return r.returncode == 0
     except Exception:
         return False
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# PeerNode
-# ──────────────────────────────────────────────────────────────────────────────
-
+# PeerNode registers w seeds,selects powerlaw nbours,gossips & participates in 2level deadnode detection
 class PeerNode:
     """
-    Peer node: registers with seeds, selects power-law neighbours,
-    gossips, and participates in two-level dead-node detection.
-
     Startup sequence (strictly serial, no socket hand-off until done)
-    -----------------------------------------------------------------
     1. Start TCP server (to accept inbound peer connections)
     2. For each chosen seed:
          a. Connect (TCP)
-         b. REGISTER_REQUEST  →  REGISTER_RESPONSE (contains peer list)
+         b. REGISTER_REQUEST to REGISTER_RESPONSE (contains peer list)
          c. Keep socket, start background listener for DEAD_CONFIRMED etc.
-    3. Union of peer lists from all successful seeds → select neighbours
+    3. Union of peer lists from all successful seeds to select neighbours
     4. Connect to neighbours (TCP, send HELLO)
     5. Start gossip loop + liveness loop
     """
 
-    GOSSIP_INTERVAL   = 5    # seconds between gossip messages
+    GOSSIP_INTERVAL   = 5    # sec between gossip messages
     MAX_GOSSIP        = 10   # max gossip messages to originate
     PING_INTERVAL     = 8    # seconds between ping rounds
     PING_MISS_THRESH  = 3    # consecutive missed pings before suspicion
-    SUSPECT_TIMEOUT   = 20   # seconds to wait for peer suspicion confirmations
+    SUSPECT_TIMEOUT   = 20   # secs to wait for peer suspicion confirmations
 
     def __init__(self, host: str, port: int, config_path: str = "config.csv"):
-        self.host = host
-        self.port = int(port)
+        self.host =host
+        self.port =int(port)
         self.id = f"{host}:{port}"
 
         self.all_seeds: list[tuple] = []
         self._load_config(config_path)
-        self.n_seeds = len(self.all_seeds)
-        self.quorum = (self.n_seeds // 2) + 1
+        self.n_seeds =len(self.all_seeds)
+        self.quorum =(self.n_seeds // 2) + 1
 
-        # Message List: hashes of all gossip messages seen
+        # Message List hashes of all gossip messages seen
         self.ml: set[str] = set()
-        self.ml_lock = threading.Lock()
+        self.ml_lock= threading.Lock()
 
-        # Neighbours: (ip,port) -> socket
+        # Neighbours are (ip,port) -> socket
         self.neighbours: dict[tuple, socket.socket] = {}
-        self.nbr_lock = threading.Lock()
+        self.nbr_lock= threading.Lock()
 
-        # Seed sockets: (ip,port) -> socket (kept open for DEAD_CONFIRMED)
+        # Seed sockets are (ip,port) -> socket (kept open for DEAD_CONFIRMED)
         self.seed_socks: dict[tuple, socket.socket] = {}
-        self.seed_lock = threading.Lock()
+        self.seed_lock= threading.Lock()
 
         # Liveness
         self.missed_pings: dict[tuple, int] = {}
-        self.mp_lock = threading.Lock()
+        self.mp_lock= threading.Lock()
         # pong_received: set of peer_keys that sent PONG this round
         self.pong_received: set[tuple] = set()
-        self.pong_lock = threading.Lock()
+        self.pong_lock= threading.Lock()
 
         # Suspicion state: peer_key -> {confirmations:set, reported:bool}
         self.suspected: dict[tuple, dict] = {}
-        self.susp_lock = threading.Lock()
+        self.susp_lock= threading.Lock()
 
         # Gossip counter
-        self.gossip_count = 0
-        self.gc_lock = threading.Lock()
+        self.gossip_count= 0
+        self.gc_lock= threading.Lock()
 
         self._setup_logger()
         self.log(f"Initialized  quorum={self.quorum}/{self.n_seeds}")
 
-    # ── Config / Logger ────────────────────────────────────────────────────────
-
-    def _load_config(self, path: str):
+    def _load_config(self, path: str):   #Config / Logger
         if not os.path.exists(path):
             print(f"[ERROR] config.csv not found: {path}")
             sys.exit(1)
         with open(path, newline="") as f:
             for row in csv.reader(f):
-                row = [c.strip() for c in row]
+                row= [c.strip() for c in row]
                 if len(row) >= 2:
                     self.all_seeds.append((row[0], int(row[1])))
 
     def _setup_logger(self):
-        self.logger = logging.getLogger(f"peer_{self.port}")
+        self.logger= logging.getLogger(f"peer_{self.port}")
         self.logger.setLevel(logging.DEBUG)
-        fmt = logging.Formatter("%(asctime)s [PEER %(name)s] %(message)s",
+        fmt= logging.Formatter("%(asctime)s [PEER %(name)s] %(message)s",
                                 datefmt="%H:%M:%S")
-        fh = logging.FileHandler(f"outputfile_peer_{self.port}.txt", mode="a")
+        fh= logging.FileHandler(f"outputfile_peer_{self.port}.txt", mode="a")
         fh.setFormatter(fmt)
         self.logger.addHandler(fh)
-        ch = logging.StreamHandler(sys.stdout)
+        ch= logging.StreamHandler(sys.stdout)
         ch.setFormatter(fmt)
         self.logger.addHandler(ch)
 
     def log(self, msg: str):
         self.logger.info(msg)
 
-    # ── Startup ────────────────────────────────────────────────────────────────
-
+    #Startup
     def start(self):
-        # 1. Server
-        self._start_server()
-
-        # 2. Register with seeds; collect peer lists inline from REGISTER_RESPONSE
+        self._start_server() # 1. Server
+        # 2. Register w seeds, collect peer lists inline from REGISTER_RESPONSE
         all_peer_entries = self._register_and_collect(self.quorum)
         if not all_peer_entries[0]:  # registered_seeds list is empty
             self.log("FATAL: could not register with enough seeds. Exiting.")
@@ -195,9 +171,9 @@ class PeerNode:
 
         registered_seeds, peer_entries = all_peer_entries
 
-        # 3. Union peer list, select neighbours
+        # 3. Union peer list
         self.log(f"Union peer list has {len(peer_entries)} entries: {peer_entries}")
-        neighbours = self._select_neighbours(peer_entries)
+        neighbours = self._select_neighbours(peer_entries) #select neighbours
         self.log(f"Selected neighbours (power-law): {neighbours}")
 
         # 4. Connect to neighbours
@@ -205,8 +181,8 @@ class PeerNode:
         time.sleep(2)  # allow inbound connections from neighbours too
 
         # 5. Loops
-        threading.Thread(target=self._gossip_loop, daemon=True).start()
-        threading.Thread(target=self._liveness_loop, daemon=True).start()
+        threading.Thread(target=self._gossip_loop,daemon=True).start()
+        threading.Thread(target=self._liveness_loop,daemon=True).start()
 
         try:
             while True:
@@ -214,17 +190,16 @@ class PeerNode:
         except KeyboardInterrupt:
             self.log("Shutting down.")
 
-    # ── Server ─────────────────────────────────────────────────────────────────
 
-    def _start_server(self):
+    def _start_server(self):  # Server 
         srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        srv.bind((self.host, self.port))
+        srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
+        srv.bind((self.host,self.port))
         srv.listen(100)
         self.log(f"Listening on {self.host}:{self.port}")
         threading.Thread(target=self._accept_loop, args=(srv,), daemon=True).start()
 
-    def _accept_loop(self, srv: socket.socket):
+    def _accept_loop(self,srv: socket.socket):
         while True:
             try:
                 conn, addr = srv.accept()
@@ -234,7 +209,11 @@ class PeerNode:
                 break
 
     def _handle_inbound(self, conn: socket.socket, addr):
-        """Handle an inbound connection from another peer."""
+        """ 
+        Handle an inbound connection from another peer
+        Peer level suspicion sends SUSPECT_REQUEST to all neighbours except suspect
+        & waits for SUSPECT_RESPONSE, quorum of confirmations triggers DEAD_REPORT
+        """
         peer_key = None
         while True:
             msg = recv_msg(conn)
@@ -279,23 +258,22 @@ class PeerNode:
         except Exception:
             pass
         
-    # ── Seed registration (serial, no races) ───────────────────────────────────
-
+    # Seed registration (serial, no races) 
     def _register_and_collect(self, need: int):
         """
         For each seed (shuffled):
           1. TCP connect
           2. Send REGISTER_REQUEST
-          3. recv REGISTER_RESPONSE  (contains peer list — use it directly)
+          3. recv REGISTER_RESPONSE  (contains peer list)
           4. Hand socket to background listener
 
         Returns (registered_seeds, union_peer_entries).
         """
-        candidates = list(self.all_seeds)
+        candidates= list(self.all_seeds)
         random.shuffle(candidates)
 
         registered: list[tuple] = []
-        peer_map: dict[tuple, int] = {}  # (ip,port) -> best known degree
+        peer_map: dict[tuple, int] = {}  # (ip,port)->best known degree
 
         for (sip, sport) in candidates:
             if len(registered) >= self.n_seeds:
@@ -312,7 +290,7 @@ class PeerNode:
                 sock.close()
                 continue
 
-            resp = recv_msg(sock)
+            resp= recv_msg(sock)
             if not resp or resp.get("status") != "ok":
                 self.log(f"Registration rejected/failed at {sip}:{sport}: {resp}")
                 sock.close()
@@ -329,23 +307,23 @@ class PeerNode:
             registered.append((sip, sport))
             with self.seed_lock:
                 self.seed_socks[(sip, sport)] = sock
-            # NOW hand off to background listener (no more synchronous reads on sock)
+            # NOW hand off to bg listener(no more synch reads on sock)
             threading.Thread(target=self._listen_seed,
                              args=(sock, (sip, sport)), daemon=True).start()
 
         self.log(f"Registered with {len(registered)}/{self.quorum} required seeds")
         entries = [{"ip": ip, "port": port, "degree": deg}
                    for (ip, port), deg in peer_map.items()]
-        return registered, entries
+        return registered,entries
 
     def _listen_seed(self, sock: socket.socket, seed_key: tuple):
-        """Background reader for a seed socket (DEAD_CONFIRMED etc.)."""
+        """Bg reader for a seed socket (DEAD_CONFIRMED etc.)"""
         while True:
-            msg = recv_msg(sock)
+            msg= recv_msg(sock)
             if msg is None:
                 self.log(f"Seed {seed_key} connection closed")
                 break
-            t = msg.get("type", "")
+            t= msg.get("type", "")
             if t == "DEAD_CONFIRMED":
                 self._on_dead_confirmed((msg["dead_ip"], int(msg["dead_port"])))
             # Other seed→peer message types can be added here
@@ -362,16 +340,15 @@ class PeerNode:
                 time.sleep(1 + i)
         return None
 
-    # ── Neighbour selection (power-law preferential attachment) ────────────────
-
-    def _select_neighbours(self, peer_list: list[dict]) -> list[tuple]:
+    # Neighbour selection (power law preferential attachment) 
+    def _select_neighbours(self,peer_list: list[dict]) -> list[tuple]:
         if not peer_list:
             return []
         n = len(peer_list)
-        # Number of neighbours drawn from Pareto distribution (power-law)
+        # No. of neighbours drawn from Pareto distribution (power law)
         k = min(n, max(1, int(random.paretovariate(2.5))))
 
-        # Weights ∝ degree+1  (preferential attachment)
+        # Weights ∝ deg+1  (preferential attachment)
         weights = [p.get("degree", 0) + 1.0 for p in peer_list]
         total = sum(weights)
         probs = [w / total for w in weights]
@@ -383,28 +360,27 @@ class PeerNode:
         for _ in range(k):
             if not remaining_idx:
                 break
-            r = random.random()
-            cum = 0.0
+            r= random.random()
+            cum= 0.0
             picked = len(remaining_idx) - 1  # fallback: last
-            for i, prob in enumerate(rem_probs):
-                cum += prob
+            for i,prob in enumerate(rem_probs):
+                cum +=prob
                 if r <= cum:
                     picked = i
                     break
-            orig = remaining_idx[picked]
+            orig= remaining_idx[picked]
             chosen.append((peer_list[orig]["ip"], int(peer_list[orig]["port"])))
             remaining_idx.pop(picked)
             rem_probs.pop(picked)
-            s = sum(rem_probs) or 1.0
+            s= sum(rem_probs) or 1.0
             rem_probs = [p / s for p in rem_probs]
 
         return chosen
 
-    # ── Outbound peer connections ──────────────────────────────────────────────
-
+    # Outbound peer conn
     def _connect_to_neighbours(self, neighbours: list[tuple]):
         for (nip, nport) in neighbours:
-            if (nip, nport) == (self.host, self.port):
+            if (nip, nport) == (self.host,self.port):
                 continue
             threading.Thread(target=self._connect_one_neighbour,
                              args=(nip, nport), daemon=True).start()
@@ -424,7 +400,7 @@ class PeerNode:
         self._listen_neighbour(sock, peer_key)
 
     def _listen_neighbour(self, sock: socket.socket, peer_key: tuple):
-        """Outbound neighbour receive loop."""
+        """Outbound neighbour receive loop """
         while True:
             msg = recv_msg(sock)
             if msg is None:
@@ -453,8 +429,8 @@ class PeerNode:
                 self._on_suspect_response(msg)
             elif t == "DEAD_CONFIRMED":
                 self._on_dead_confirmed((msg["dead_ip"], int(msg["dead_port"])))
-    # ── Gossip ─────────────────────────────────────────────────────────────────
 
+    # Gossip
     def _gossip_loop(self):
         """Generate one gossip message every 5 s, up to MAX_GOSSIP."""
         time.sleep(2)  # allow neighbour connections to stabilise
@@ -484,14 +460,14 @@ class PeerNode:
 
         with self.ml_lock:
             if h in self.ml:
-                return  # duplicate — drop
+                return  # duplicate or drop
             self.ml.add(h)
 
         content = msg.get("content", "")
         origin = f"{msg.get('origin_ip')}:{msg.get('origin_port')}"
         self.log(f"GOSSIP (first time): '{content}'  from {origin}  ts={time.time():.3f}")
 
-        # Forward to all neighbours except the sender
+        # Fwd to all neighbours except the sender
         fwd = dict(msg)
         fwd["sender_ip"] = self.host
         fwd["sender_port"] = self.port
@@ -504,8 +480,7 @@ class PeerNode:
             if s is not exclude:
                 send_msg(s, msg)
 
-    # ── Liveness / Ping ────────────────────────────────────────────────────────
-
+    # Liveness/Ping 
     def _liveness_loop(self):
         time.sleep(5)   # let gossip start first
         while True:
@@ -544,10 +519,10 @@ class PeerNode:
             for peer_key in still_alive:
                 if peer_key not in ponged:
                     self._miss(peer_key)
-                # else: reset counter
-                else:
+                
+                else: # reset counter
                     with self.mp_lock:
-                        self.missed_pings[peer_key] = 0
+                        self.missed_pings[peer_key] =0
 
             time.sleep(self.PING_INTERVAL // 2)
 
@@ -558,8 +533,7 @@ class PeerNode:
         if count >= self.PING_MISS_THRESH:
             self._start_suspicion(peer_key)
 
-    # ── Suspicion / Dead-node ──────────────────────────────────────────────────
-
+    #Suspicion / Dead node
     def _start_suspicion(self, suspect: tuple):
         with self.susp_lock:
             if suspect in self.suspected:
@@ -582,7 +556,18 @@ class PeerNode:
 
     def _on_suspect_request(self, msg: dict, conn: socket.socket):
         suspect = (msg["suspect_ip"], int(msg["suspect_port"]))
-        alive = system_ping(suspect[0])
+        
+        # ICMP ping fails for localhost testing. Use a fast TCP port-knock instead.
+        alive = False
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(1)
+            s.connect(suspect)
+            s.close()
+            alive = True
+        except Exception:
+            pass # Connection refused means the peer is actually dead
+
         self.log(f"SUSPECT_REQUEST for {suspect} → ping={'alive' if alive else 'dead'}")
         send_msg(conn, {"type": "SUSPECT_RESPONSE",
                         "suspect_ip": suspect[0], "suspect_port": suspect[1],
@@ -651,14 +636,11 @@ class PeerNode:
             self.missed_pings.pop(dead_key, None)
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Entry point
-# ──────────────────────────────────────────────────────────────────────────────
-
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Usage: python peer.py <IP> <Port> [config.csv]")
         sys.exit(1)
-    cfg = sys.argv[3] if len(sys.argv) > 3 else "config.csv"
-    node = PeerNode(sys.argv[1], int(sys.argv[2]), cfg)
+    cfg= sys.argv[3] if len(sys.argv) > 3 else "config.csv"
+    node= PeerNode(sys.argv[1], int(sys.argv[2]), cfg)
     node.start()

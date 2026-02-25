@@ -1,3 +1,73 @@
 13:02:06 [PEER peer_6004] Initialized  quorum=2/3
 13:02:06 [PEER peer_6004] Listening on 127.0.0.1:6004
 13:02:06 [PEER peer_6004] Registering with seed 127.0.0.1:5001
+00:57:47 [PEER peer_6004] Initialized  quorum=2/3
+00:57:47 [PEER peer_6004] Listening on 127.0.0.1:6004
+00:57:57 [PEER peer_6004] Cannot reach seed 127.0.0.1:5013
+00:57:57 [PEER peer_6004] Registering with seed 127.0.0.1:5012
+00:57:57 [PEER peer_6004] Registered with seed 127.0.0.1:5012
+00:57:57 [PEER peer_6004] Peer list from 127.0.0.1:5012: [{'ip': '127.0.0.1', 'port': 6002, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6001, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6003, 'degree': 0}]
+00:57:57 [PEER peer_6004] Registering with seed 127.0.0.1:5011
+00:57:57 [PEER peer_6004] Registered with seed 127.0.0.1:5011
+00:57:57 [PEER peer_6004] Peer list from 127.0.0.1:5011: [{'ip': '127.0.0.1', 'port': 6002, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6001, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6003, 'degree': 0}]
+00:57:57 [PEER peer_6004] Registered with 2/2 required seeds
+00:57:57 [PEER peer_6004] Union peer list has 3 entries: [{'ip': '127.0.0.1', 'port': 6002, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6001, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6003, 'degree': 0}]
+00:57:57 [PEER peer_6004] Selected neighbours (power-law): [('127.0.0.1', 6001)]
+00:57:57 [PEER peer_6004] Connected to neighbour 127.0.0.1:6001
+00:57:57 [PEER peer_6004] GOSSIP (first time): '1772047677.492975:127.0.0.1:3'  from 127.0.0.1:6003  ts=1772047677.494
+00:58:01 [PEER peer_6004] Generated gossip #1: 1772047681.264816:127.0.0.1:1
+00:58:02 [PEER peer_6004] GOSSIP (first time): '1772047682.496946:127.0.0.1:4'  from 127.0.0.1:6003  ts=1772047682.499
+00:58:06 [PEER peer_6004] Generated gossip #2: 1772047686.271102:127.0.0.1:2
+00:58:07 [PEER peer_6004] GOSSIP (first time): '1772047687.500855:127.0.0.1:5'  from 127.0.0.1:6003  ts=1772047687.502
+00:58:11 [PEER peer_6004] Generated gossip #3: 1772047691.275332:127.0.0.1:3
+00:58:12 [PEER peer_6004] GOSSIP (first time): '1772047692.506571:127.0.0.1:6'  from 127.0.0.1:6003  ts=1772047692.509
+00:58:16 [PEER peer_6004] Generated gossip #4: 1772047696.280393:127.0.0.1:4
+00:58:17 [PEER peer_6004] GOSSIP (first time): '1772047697.512671:127.0.0.1:7'  from 127.0.0.1:6003  ts=1772047697.515
+00:58:21 [PEER peer_6004] Generated gossip #5: 1772047701.286924:127.0.0.1:5
+00:58:22 [PEER peer_6004] GOSSIP (first time): '1772047702.516880:127.0.0.1:8'  from 127.0.0.1:6003  ts=1772047702.519
+00:58:26 [PEER peer_6004] Generated gossip #6: 1772047706.291272:127.0.0.1:6
+00:58:27 [PEER peer_6004] GOSSIP (first time): '1772047707.522894:127.0.0.1:9'  from 127.0.0.1:6003  ts=1772047707.525
+00:58:30 [PEER peer_6004] Shutting down.
+01:07:43 [PEER peer_6004] Initialized  quorum=2/3
+01:07:43 [PEER peer_6004] Listening on 127.0.0.1:6004
+01:07:53 [PEER peer_6004] Cannot reach seed 127.0.0.1:5013
+01:07:53 [PEER peer_6004] Registering with seed 127.0.0.1:5011
+01:07:53 [PEER peer_6004] Registered with seed 127.0.0.1:5011
+01:07:53 [PEER peer_6004] Peer list from 127.0.0.1:5011: [{'ip': '127.0.0.1', 'port': 6001, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6002, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6003, 'degree': 0}]
+01:07:53 [PEER peer_6004] Registering with seed 127.0.0.1:5012
+01:07:53 [PEER peer_6004] Registered with seed 127.0.0.1:5012
+01:07:53 [PEER peer_6004] Peer list from 127.0.0.1:5012: [{'ip': '127.0.0.1', 'port': 6001, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6002, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6003, 'degree': 0}]
+01:07:53 [PEER peer_6004] Registered with 2/2 required seeds
+01:07:53 [PEER peer_6004] Union peer list has 3 entries: [{'ip': '127.0.0.1', 'port': 6001, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6002, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6003, 'degree': 0}]
+01:07:53 [PEER peer_6004] Selected neighbours (power-law): [('127.0.0.1', 6003)]
+01:07:53 [PEER peer_6004] Connected to neighbour 127.0.0.1:6003
+01:07:54 [PEER peer_6004] GOSSIP (first time): '1772048274.470303:127.0.0.1:1'  from 127.0.0.1:6003  ts=1772048274.472
+01:07:55 [PEER peer_6004] GOSSIP (first time): '1772048275.614500:127.0.0.1:2'  from 127.0.0.1:6002  ts=1772048275.616
+01:07:57 [PEER peer_6004] GOSSIP (first time): '1772048277.812496:127.0.0.1:3'  from 127.0.0.1:6001  ts=1772048277.816
+01:07:57 [PEER peer_6004] Generated gossip #1: 1772048277.936693:127.0.0.1:1
+01:07:59 [PEER peer_6004] GOSSIP (first time): '1772048279.476542:127.0.0.1:2'  from 127.0.0.1:6003  ts=1772048279.478
+01:08:00 [PEER peer_6004] GOSSIP (first time): '1772048280.620609:127.0.0.1:3'  from 127.0.0.1:6002  ts=1772048280.623
+01:08:02 [PEER peer_6004] GOSSIP (first time): '1772048282.817003:127.0.0.1:4'  from 127.0.0.1:6001  ts=1772048282.820
+01:08:02 [PEER peer_6004] Generated gossip #2: 1772048282.942855:127.0.0.1:2
+01:08:04 [PEER peer_6004] GOSSIP (first time): '1772048284.480535:127.0.0.1:3'  from 127.0.0.1:6003  ts=1772048284.482
+01:08:05 [PEER peer_6004] GOSSIP (first time): '1772048285.626729:127.0.0.1:4'  from 127.0.0.1:6002  ts=1772048285.629
+01:08:07 [PEER peer_6004] GOSSIP (first time): '1772048287.820304:127.0.0.1:5'  from 127.0.0.1:6001  ts=1772048287.824
+01:08:07 [PEER peer_6004] Generated gossip #3: 1772048287.948850:127.0.0.1:3
+01:08:09 [PEER peer_6004] GOSSIP (first time): '1772048289.486529:127.0.0.1:4'  from 127.0.0.1:6003  ts=1772048289.488
+01:08:10 [PEER peer_6004] GOSSIP (first time): '1772048290.632753:127.0.0.1:5'  from 127.0.0.1:6002  ts=1772048290.635
+01:08:12 [PEER peer_6004] GOSSIP (first time): '1772048292.824200:127.0.0.1:6'  from 127.0.0.1:6001  ts=1772048292.828
+01:08:12 [PEER peer_6004] Generated gossip #4: 1772048292.954157:127.0.0.1:4
+01:08:14 [PEER peer_6004] GOSSIP (first time): '1772048294.492671:127.0.0.1:5'  from 127.0.0.1:6003  ts=1772048294.494
+01:08:15 [PEER peer_6004] GOSSIP (first time): '1772048295.639161:127.0.0.1:6'  from 127.0.0.1:6002  ts=1772048295.641
+01:08:17 [PEER peer_6004] GOSSIP (first time): '1772048297.825464:127.0.0.1:7'  from 127.0.0.1:6001  ts=1772048297.830
+01:08:17 [PEER peer_6004] Generated gossip #5: 1772048297.957470:127.0.0.1:5
+01:08:19 [PEER peer_6004] GOSSIP (first time): '1772048299.499148:127.0.0.1:6'  from 127.0.0.1:6003  ts=1772048299.500
+01:08:20 [PEER peer_6004] GOSSIP (first time): '1772048300.645228:127.0.0.1:7'  from 127.0.0.1:6002  ts=1772048300.647
+01:08:22 [PEER peer_6004] GOSSIP (first time): '1772048302.831889:127.0.0.1:8'  from 127.0.0.1:6001  ts=1772048302.834
+01:08:22 [PEER peer_6004] Generated gossip #6: 1772048302.958786:127.0.0.1:6
+01:08:24 [PEER peer_6004] GOSSIP (first time): '1772048304.503455:127.0.0.1:7'  from 127.0.0.1:6003  ts=1772048304.505
+01:08:25 [PEER peer_6004] GOSSIP (first time): '1772048305.651356:127.0.0.1:8'  from 127.0.0.1:6002  ts=1772048305.669
+01:08:27 [PEER peer_6004] GOSSIP (first time): '1772048307.837481:127.0.0.1:9'  from 127.0.0.1:6001  ts=1772048307.841
+01:08:27 [PEER peer_6004] Generated gossip #7: 1772048307.962819:127.0.0.1:7
+01:08:29 [PEER peer_6004] GOSSIP (first time): '1772048309.509947:127.0.0.1:8'  from 127.0.0.1:6003  ts=1772048309.511
+01:08:29 [PEER peer_6004] Shutting down.

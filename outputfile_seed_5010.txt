@@ -25,3 +25,57 @@
 17:30:54 [SEED seed_5010] Synced removal of ('127.0.0.1', 6002) via DEAD_CONFIRMED from peer seed
 17:30:54 [SEED seed_5010] Synced removal of ('127.0.0.1', 6002) via DEAD_CONFIRMED from peer seed
 17:44:32 [SEED seed_5010] Shutting down.
+00:40:36 [SEED seed_5010] Initialized  n_seeds=3  quorum=2
+00:40:36 [SEED seed_5010] Listening on 127.0.0.1:5010
+00:40:45 [SEED seed_5010] Dialled seed 127.0.0.1:5011
+00:40:56 [SEED seed_5010] Dialled seed 127.0.0.1:5012
+00:41:09 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6002_405217.4469 peer=('127.0.0.1', 6002) from=127.0.0.1:5011 → YES
+00:41:13 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6001_405220.7776 peer=('127.0.0.1', 6001) from=127.0.0.1:5012 → YES
+00:41:13 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6001_405220.7807 peer=('127.0.0.1', 6001) from=127.0.0.1:5011 → YES
+00:41:18 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6003_405226.4167 peer=('127.0.0.1', 6003) from=127.0.0.1:5011 → YES
+00:41:18 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6003_405226.4199 peer=('127.0.0.1', 6003) from=127.0.0.1:5012 → YES
+00:41:20 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6002_405227.4647 peer=('127.0.0.1', 6002) from=127.0.0.1:5012 → YES
+00:52:26 [SEED seed_5010] Initialized  n_seeds=3  quorum=2
+00:52:26 [SEED seed_5010] Listening on 127.0.0.1:5010
+00:52:35 [SEED seed_5010] Dialled seed 127.0.0.1:5011
+00:52:40 [SEED seed_5010] Dialled seed 127.0.0.1:5012
+00:52:55 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6002_405922.4950 peer=('127.0.0.1', 6002) from=127.0.0.1:5011 → YES
+00:52:55 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6002_405922.4962 peer=('127.0.0.1', 6002) from=127.0.0.1:5012 → YES
+00:52:59 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6001_405926.4519 peer=('127.0.0.1', 6001) from=127.0.0.1:5011 → YES
+00:52:59 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6001_405926.4544 peer=('127.0.0.1', 6001) from=127.0.0.1:5012 → YES
+00:53:01 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6003_405928.5797 peer=('127.0.0.1', 6003) from=127.0.0.1:5011 → YES
+00:53:11 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6003_405938.6013 peer=('127.0.0.1', 6003) from=127.0.0.1:5012 → YES
+00:54:47 [SEED seed_5010] DEAD_PROPOSAL received req_id=rem_127.0.0.1_6003_406035.3902 → YES
+00:54:47 [SEED seed_5010] DEAD_PROPOSAL received req_id=rem_127.0.0.1_6003_406035.3907 → YES
+00:54:47 [SEED seed_5010] DEAD_PROPOSAL received req_id=rem_127.0.0.1_6003_406035.3902 → YES
+00:54:47 [SEED seed_5010] Synced removal of ('127.0.0.1', 6003) via DEAD_CONFIRMED from peer seed
+00:54:47 [SEED seed_5010] DEAD_PROPOSAL received req_id=rem_127.0.0.1_6003_406035.3909 → YES
+00:54:47 [SEED seed_5010] Synced removal of ('127.0.0.1', 6003) via DEAD_CONFIRMED from peer seed
+00:57:43 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6003_406210.9118 peer=('127.0.0.1', 6003) from=127.0.0.1:5012 → YES
+00:57:43 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6003_406210.9175 peer=('127.0.0.1', 6003) from=127.0.0.1:5011 → YES
+00:57:57 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6004_406224.7019 peer=('127.0.0.1', 6004) from=127.0.0.1:5012 → YES
+00:57:57 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6004_406224.7053 peer=('127.0.0.1', 6004) from=127.0.0.1:5011 → YES
+01:05:57 [SEED seed_5010] Shutting down.
+01:07:23 [SEED seed_5010] Initialized  n_seeds=3  quorum=2
+01:07:23 [SEED seed_5010] Listening on 127.0.0.1:5010
+01:07:28 [SEED seed_5010] Dialled seed 127.0.0.1:5011
+01:07:32 [SEED seed_5010] Dialled seed 127.0.0.1:5012
+01:07:33 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6001_406801.2597 peer=('127.0.0.1', 6001) from=127.0.0.1:5012 → YES
+01:07:33 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6001_406801.2606 peer=('127.0.0.1', 6001) from=127.0.0.1:5011 → YES
+01:07:46 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6002_406814.0813 peer=('127.0.0.1', 6002) from=127.0.0.1:5012 → YES
+01:07:46 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6002_406814.0845 peer=('127.0.0.1', 6002) from=127.0.0.1:5011 → YES
+01:07:50 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6003_406817.9505 peer=('127.0.0.1', 6003) from=127.0.0.1:5011 → YES
+01:07:50 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6003_406817.9531 peer=('127.0.0.1', 6003) from=127.0.0.1:5012 → YES
+01:07:53 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6004_406821.4095 peer=('127.0.0.1', 6004) from=127.0.0.1:5011 → YES
+01:07:53 [SEED seed_5010] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6004_406821.4130 peer=('127.0.0.1', 6004) from=127.0.0.1:5012 → YES
+01:08:29 [SEED seed_5010] DEAD_PROPOSAL received req_id=rem_127.0.0.1_6004_406857.1500 → YES
+01:08:29 [SEED seed_5010] DEAD_PROPOSAL received req_id=rem_127.0.0.1_6004_406857.1500 → YES
+01:08:29 [SEED seed_5010] Synced removal of ('127.0.0.1', 6004) via DEAD_CONFIRMED from peer seed
+01:08:29 [SEED seed_5010] Synced removal of ('127.0.0.1', 6004) via DEAD_CONFIRMED from peer seed
+01:11:20 [SEED seed_5010] DEAD_PROPOSAL received req_id=rem_127.0.0.1_6003_407027.5980 → YES
+01:11:20 [SEED seed_5010] DEAD_PROPOSAL received req_id=rem_127.0.0.1_6003_407027.5981 → YES
+01:11:20 [SEED seed_5010] Synced removal of ('127.0.0.1', 6003) via DEAD_CONFIRMED from peer seed
+01:11:20 [SEED seed_5010] Synced removal of ('127.0.0.1', 6003) via DEAD_CONFIRMED from peer seed
+01:12:48 [SEED seed_5010] Lost connection to seed 127.0.0.1:5012 — will retry
+01:12:56 [SEED seed_5010] Lost connection to seed 127.0.0.1:5011 — will retry
+01:13:04 [SEED seed_5010] Shutting down.
