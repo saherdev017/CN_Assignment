@@ -56,15 +56,15 @@ Each seed needs its own terminal. Activate the venv in each:
 ```powershell
 # Terminal 1
 .\venv\Scripts\activate
-python seed.py 127.0.0.1 5001
+python seed.py 127.0.0.1 5010
 
 # Terminal 2
 .\venv\Scripts\activate
-python seed.py 127.0.0.1 5002
+python seed.py 127.0.0.1 5011
 
 # Terminal 3
 .\venv\Scripts\activate
-python seed.py 127.0.0.1 5003
+python seed.py 127.0.0.1 5012
 ```
 
 ### 3. Start Peer Nodes (open additional terminals, one per peer)
