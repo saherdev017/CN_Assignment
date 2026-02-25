@@ -1,6 +1,6 @@
 # Gossip-Based P2P Network
 
-A Python implementation of a gossip peer-to-peer network with consensus-driven membership management, power-law overlay topology, and two-level dead-node detection.
+A Python implementation of a gossip peer to peer network with consensus driven membership management, power law overlay topology and two level dead node detection.
 
 ---
 
@@ -157,6 +157,13 @@ Press `Ctrl+C` on any running Seed or Peer. The application will catch the `Keyb
 | Gossip Dedup | SHA-256 hash stored in Message List (ML) prevents infinite network loops. |
 | Message Framing | 4-byte big-endian length prefix + JSON payloads for reliable stream parsing. |
 | Fault Tolerance | `SO_REUSEADDR` prevents `TIME_WAIT` port lockouts; `KeyboardInterrupt` handling ensures graceful node shutdowns. |
+
+### Applied Computer Networks Concepts:
+This project translates several theoretical Computer Networks concepts into a practical distributed system:
+1. **Application-Layer Framing over TCP:** Because TCP is a continuous byte-stream protocol (not a message-based protocol), messages can suffer from fragmentation or concatenation in transit. This code solves this using Length-Prefixed Framing. Each JSON payload is prepended with a 4-byte big-endian integer representing its exact length, ensuring the application layer always parses complete, uncorrupted messages regardless of network buffering.
+2. **Epidemic Broadcast (Gossip Protocol):**  The network utilizes epidemic routing to disseminate state. To prevent Broadcast Storms (infinite forwarding loops that saturate bandwidth), each peer maintains a Message List (ML). By hashing incoming messages with SHA-256, peers instantly drop duplicate packets, ensuring messages traverse any given network link at most once.
+3. **Scale-Free Network Topologies:**  Rather than forming a random graph, peers construct a Power-Law overlay using Preferential Attachment. When a peer requests the union Peer List from the seeds, it weights potential neighbors by their current degree. This simulates the Barabási–Albert model, creating robust "hub" nodes that ensure low network diameter and high fault tolerance against random node failures.
+4. **Distributed Quorum Consensus:**  To prevent split-brain scenarios and Sybil attacks, membership state is tightly controlled using majority voting. A state change (addition or removal) is only committed when $\lfloor n/2 \rfloor + 1$ seeds cast a True vote. Furthermore, the two-tier consensus model prevents malicious peers from unilaterally deleting functional nodes by requiring out-of-band peer-level TCP port checks before escalating a failure report.
 
 ### Gossip Message Format
 
