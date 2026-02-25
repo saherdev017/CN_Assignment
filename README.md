@@ -30,9 +30,9 @@ A Python implementation of a gossip peer-to-peer network with consensus-driven m
 Edit `config.csv` to specify seed node addresses (one per line):
 
 ```
-127.0.0.1,5001
-127.0.0.1,5002
-127.0.0.1,5003
+127.0.0.1,5011
+127.0.0.1,5012
+127.0.0.1,5013
 ```
 
 The number of seeds `n` is determined by the number of lines. Peers and seeds both read this file to learn about the network.
@@ -107,18 +107,22 @@ GOSSIP received (first time): '<timestamp>:<IP>:<MsgNo>' from <sender>
 ```
 Each peer generates at most 10 messages, every 5 seconds.
 
-### Test 3 — Dead node detection
-1. Start 3 seeds + 3 peers, wait for gossip to begin (~15s)
-2. Kill one peer (Ctrl+C in its terminal)
-3. Wait ~30–40 seconds
+### Test 3 — Dead node detection (Instantaneous)
+1. Start 3 seeds + 3 peers, wait for gossip to begin (~15s).
+2. Kill one peer (Ctrl+C in its terminal).
+3. Observe the immediate network reaction.
 
-Expected sequence in logs:
-1. Remaining peers report missed pings for the dead peer
-2. Suspicion is initiated
-3. Neighbours are queried via `SUSPECT_REQUEST`
-4. Peer-level consensus reached → `DEAD_REPORT` sent to seeds
-5. Seeds vote → `DEAD_CONFIRMED` broadcast
-6. Dead peer removed from all PLs
+**Expected sequence in logs:**
+1. **Event-Driven Detection:** Remaining peers instantly detect the broken TCP pipe (no need to wait for ping timeouts).
+2. **Suspicion Initiated:** Peers immediately log a local suspicion and halt pings to the dead node.
+3. **Peer-Level Consensus:** Neighbours are queried via `SUSPECT_REQUEST`.
+4. **Escalation:** Peer-level consensus reached → `DEAD_REPORT` sent to seeds.
+5. **Seed-Level Consensus:** Seeds vote → `DEAD_CONFIRMED` broadcast.
+6. **Purge:** Dead peer removed from all active PLs across the network.
+*(  This entire 6-step consensus pipeline executes in < 2 seconds).*
+
+### Test 4 — Graceful Shutdown
+Press `Ctrl+C` on any running Seed or Peer. The application will catch the `KeyboardInterrupt`, close active sockets cleanly, and exit with a `Shutting down.` log rather than throwing a Python traceback.
 
 ---
 
@@ -146,11 +150,13 @@ Expected sequence in logs:
 
 | Feature | Mechanism |
 |---------|-----------|
-| Peer registration | Seed-level Paxos-style majority vote |
-| Dead-node detection | Two-level: peer ping + multi-peer confirmation → seed vote |
-| Overlay topology | Preferential attachment (Pareto distribution for neighbour count) |
-| Gossip dedup | SHA-256 hash stored in Message List (ML) |
-| Message framing | 4-byte big-endian length prefix + JSON payload |
+| Peer Registration | Seed-level Paxos-style majority vote. |
+| Dead-Node Detection | Event-driven TCP socket monitoring + ICMP system pings. |
+| Two-Tier Consensus | Peer-level confirmation prevents false reports; Seed-level vote prevents unilateral deletions. |
+| Overlay Topology | Preferential attachment (Pareto distribution for neighbour count). |
+| Gossip Dedup | SHA-256 hash stored in Message List (ML) prevents infinite network loops. |
+| Message Framing | 4-byte big-endian length prefix + JSON payloads for reliable stream parsing. |
+| Fault Tolerance | `SO_REUSEADDR` prevents `TIME_WAIT` port lockouts; `KeyboardInterrupt` handling ensures graceful node shutdowns. |
 
 ### Gossip Message Format
 
