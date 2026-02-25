@@ -1,0 +1,56 @@
+17:04:21 [SEED seed_5011] Initialized  n_seeds=3  quorum=2
+17:04:21 [SEED seed_5011] Listening on 127.0.0.1:5011
+17:04:39 [SEED seed_5011] Initialized  n_seeds=3  quorum=2
+17:04:56 [SEED seed_5011] Dialled seed 127.0.0.1:5012
+17:05:12 [SEED seed_5011] Seed 127.0.0.1:5010 connected (inbound)
+17:05:34 [SEED seed_5011] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6001_387835.4885 peer=('127.0.0.1', 6001) from=127.0.0.1:5012 → YES
+17:05:34 [SEED seed_5011] REGISTER_REQUEST ('127.0.0.1', 6001)  req_id=reg_127.0.0.1_6001_387835.4943
+17:05:34 [SEED seed_5011] Broadcasting REGISTER_PROPOSAL to 2 peer seed(s)  req_id=reg_127.0.0.1_6001_387835.4943
+17:05:34 [SEED seed_5011] REGISTER_VOTE req_id=reg_127.0.0.1_6001_387835.4943 voter=127.0.0.1:5012 vote=True
+17:05:34 [SEED seed_5011] REGISTER_VOTE req_id=reg_127.0.0.1_6001_387835.4943 voter=127.0.0.1:5010 vote=True
+17:05:34 [SEED seed_5011] Peer ('127.0.0.1', 6001) REGISTERED  yes=2  PL_size=1
+17:05:43 [SEED seed_5011] REGISTER_REQUEST ('127.0.0.1', 6002)  req_id=reg_127.0.0.1_6002_387844.1108
+17:05:43 [SEED seed_5011] Broadcasting REGISTER_PROPOSAL to 2 peer seed(s)  req_id=reg_127.0.0.1_6002_387844.1108
+17:05:43 [SEED seed_5011] REGISTER_VOTE req_id=reg_127.0.0.1_6002_387844.1108 voter=127.0.0.1:5012 vote=True
+17:05:43 [SEED seed_5011] REGISTER_VOTE req_id=reg_127.0.0.1_6002_387844.1108 voter=127.0.0.1:5010 vote=True
+17:05:43 [SEED seed_5011] Peer ('127.0.0.1', 6002) REGISTERED  yes=2  PL_size=2
+17:05:43 [SEED seed_5011] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6002_387844.1121 peer=('127.0.0.1', 6002) from=127.0.0.1:5012 → YES
+17:05:43 [SEED seed_5011] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6003_387844.1187 peer=('127.0.0.1', 6003) from=127.0.0.1:5012 → YES
+17:05:53 [SEED seed_5011] REGISTER_REQUEST ('127.0.0.1', 6003)  req_id=reg_127.0.0.1_6003_387854.1411
+17:05:53 [SEED seed_5011] Broadcasting REGISTER_PROPOSAL to 2 peer seed(s)  req_id=reg_127.0.0.1_6003_387854.1411
+17:05:53 [SEED seed_5011] REGISTER_VOTE req_id=reg_127.0.0.1_6003_387854.1411 voter=127.0.0.1:5012 vote=True
+17:05:53 [SEED seed_5011] REGISTER_VOTE req_id=reg_127.0.0.1_6003_387854.1411 voter=127.0.0.1:5010 vote=True
+17:05:53 [SEED seed_5011] Peer ('127.0.0.1', 6003) REGISTERED  yes=2  PL_size=3
+17:17:26 [SEED seed_5011] Lost connection to seed 127.0.0.1:5012 — will retry
+17:19:44 [SEED seed_5011] Shutting down.
+17:29:09 [SEED seed_5011] Initialized  n_seeds=3  quorum=2
+17:29:09 [SEED seed_5011] Listening on 127.0.0.1:5011
+17:29:11 [SEED seed_5011] Seed 127.0.0.1:5010 connected (inbound)
+17:29:18 [SEED seed_5011] Dialled seed 127.0.0.1:5012
+17:29:35 [SEED seed_5011] REGISTER_REQUEST ('127.0.0.1', 6002)  req_id=reg_127.0.0.1_6002_389276.1518
+17:29:35 [SEED seed_5011] Broadcasting REGISTER_PROPOSAL to 2 peer seed(s)  req_id=reg_127.0.0.1_6002_389276.1518
+17:29:35 [SEED seed_5011] REGISTER_VOTE req_id=reg_127.0.0.1_6002_389276.1518 voter=127.0.0.1:5010 vote=True
+17:29:35 [SEED seed_5011] Peer ('127.0.0.1', 6002) REGISTERED  yes=2  PL_size=1
+17:29:35 [SEED seed_5011] REGISTER_VOTE req_id=reg_127.0.0.1_6002_389276.1518 voter=127.0.0.1:5012 vote=True
+17:29:35 [SEED seed_5011] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6002_389276.1537 peer=('127.0.0.1', 6002) from=127.0.0.1:5012 → YES
+17:29:40 [SEED seed_5011] REGISTER_REQUEST ('127.0.0.1', 6001)  req_id=reg_127.0.0.1_6001_389281.0096
+17:29:40 [SEED seed_5011] Broadcasting REGISTER_PROPOSAL to 2 peer seed(s)  req_id=reg_127.0.0.1_6001_389281.0096
+17:29:40 [SEED seed_5011] REGISTER_VOTE req_id=reg_127.0.0.1_6001_389281.0096 voter=127.0.0.1:5010 vote=True
+17:29:40 [SEED seed_5011] Peer ('127.0.0.1', 6001) REGISTERED  yes=2  PL_size=2
+17:29:40 [SEED seed_5011] REGISTER_VOTE req_id=reg_127.0.0.1_6001_389281.0096 voter=127.0.0.1:5012 vote=True
+17:29:40 [SEED seed_5011] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6001_389281.0143 peer=('127.0.0.1', 6001) from=127.0.0.1:5012 → YES
+17:29:51 [SEED seed_5011] REGISTER_PROPOSAL req_id=reg_127.0.0.1_6003_389292.1217 peer=('127.0.0.1', 6003) from=127.0.0.1:5012 → YES
+17:29:51 [SEED seed_5011] REGISTER_REQUEST ('127.0.0.1', 6003)  req_id=reg_127.0.0.1_6003_389292.1243
+17:29:51 [SEED seed_5011] Broadcasting REGISTER_PROPOSAL to 2 peer seed(s)  req_id=reg_127.0.0.1_6003_389292.1243
+17:29:51 [SEED seed_5011] REGISTER_VOTE req_id=reg_127.0.0.1_6003_389292.1243 voter=127.0.0.1:5012 vote=True
+17:29:51 [SEED seed_5011] REGISTER_VOTE req_id=reg_127.0.0.1_6003_389292.1243 voter=127.0.0.1:5010 vote=True
+17:29:51 [SEED seed_5011] Peer ('127.0.0.1', 6003) REGISTERED  yes=2  PL_size=3
+17:30:54 [SEED seed_5011] DEAD_REPORT  dead=('127.0.0.1', 6002)  reporter=127.0.0.1:6001
+17:30:54 [SEED seed_5011] DEAD_REPORT  dead=('127.0.0.1', 6002)  reporter=127.0.0.1:6003
+17:30:54 [SEED seed_5011] DEAD_PROPOSAL req_id=rem_127.0.0.1_6002_389355.3707  dead=('127.0.0.1', 6002)
+17:30:54 [SEED seed_5011] DEAD_PROPOSAL received req_id=rem_127.0.0.1_6002_389355.3708 → YES
+17:30:54 [SEED seed_5011] DEAD_VOTE req_id=rem_127.0.0.1_6002_389355.3707 voter=127.0.0.1:5012 vote=True
+17:30:54 [SEED seed_5011] Peer ('127.0.0.1', 6002) REMOVED from PL  req_id=rem_127.0.0.1_6002_389355.3707  PL_size=2
+17:30:54 [SEED seed_5011] Synced removal of ('127.0.0.1', 6002) via DEAD_CONFIRMED from peer seed
+17:30:54 [SEED seed_5011] DEAD_VOTE req_id=rem_127.0.0.1_6002_389355.3707 voter=127.0.0.1:5010 vote=True
+17:44:35 [SEED seed_5011] Shutting down.

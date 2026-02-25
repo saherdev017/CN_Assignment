@@ -239,7 +239,12 @@ class PeerNode:
         while True:
             msg = recv_msg(conn)
             if msg is None:
+                #Instantly trigger suspicion for dropped inbound connections too!
+                if peer_key:
+                    self.log(f"Lost inbound connection from {peer_key}")
+                    self._start_suspicion(peer_key)
                 break
+            
             t = msg.get("type", "")
             if t == "HELLO":
                 peer_key = (msg["ip"], int(msg["port"]))
@@ -265,6 +270,7 @@ class PeerNode:
                 self._on_suspect_response(msg)
             elif t == "DEAD_CONFIRMED":
                 self._on_dead_confirmed((msg["dead_ip"], int(msg["dead_port"])))
+                
         if peer_key:
             with self.nbr_lock:
                 self.neighbours.pop(peer_key, None)
@@ -272,7 +278,7 @@ class PeerNode:
             conn.close()
         except Exception:
             pass
-
+        
     # ── Seed registration (serial, no races) ───────────────────────────────────
 
     def _register_and_collect(self, need: int):
@@ -423,9 +429,13 @@ class PeerNode:
             msg = recv_msg(sock)
             if msg is None:
                 self.log(f"Lost connection to neighbour {peer_key}")
+                
+                self._start_suspicion(peer_key)
+                
                 with self.nbr_lock:
                     self.neighbours.pop(peer_key, None)
                 break
+            
             t = msg.get("type", "")
             if t == "GOSSIP":
                 self._on_gossip(msg, sock)
@@ -443,7 +453,6 @@ class PeerNode:
                 self._on_suspect_response(msg)
             elif t == "DEAD_CONFIRMED":
                 self._on_dead_confirmed((msg["dead_ip"], int(msg["dead_port"])))
-
     # ── Gossip ─────────────────────────────────────────────────────────────────
 
     def _gossip_loop(self):
