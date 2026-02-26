@@ -300,3 +300,49 @@
 01:11:54 [PEER peer_6001] SUSPICION started for ('127.0.0.1', 6002)
 01:12:14 [PEER peer_6001] Suspicion TIMEOUT for ('127.0.0.1', 6002) — no peer quorum, cancelling
 01:12:37 [PEER peer_6001] Shutting down.
+19:12:17 [PEER peer_6001] Initialized  quorum=2/3
+19:12:17 [PEER peer_6001] Listening on 127.0.0.1:6001
+19:12:17 [PEER peer_6001] Registering with seed 127.0.0.1:5011
+19:12:17 [PEER peer_6001] Registered with seed 127.0.0.1:5011
+19:12:17 [PEER peer_6001] Peer list from 127.0.0.1:5011: []
+19:12:35 [PEER peer_6001] Cannot reach seed 127.0.0.1:5013
+19:12:35 [PEER peer_6001] Registering with seed 127.0.0.1:5012
+19:12:35 [PEER peer_6001] Registered with seed 127.0.0.1:5012
+19:12:35 [PEER peer_6001] Peer list from 127.0.0.1:5012: [{'ip': '127.0.0.1', 'port': 6002, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6003, 'degree': 0}]
+19:12:35 [PEER peer_6001] Registered with 2/2 required seeds
+19:12:35 [PEER peer_6001] Union peer list has 2 entries: [{'ip': '127.0.0.1', 'port': 6002, 'degree': 0}, {'ip': '127.0.0.1', 'port': 6003, 'degree': 0}]
+19:12:35 [PEER peer_6001] Selected neighbours (power-law): [('127.0.0.1', 6003)]
+19:12:35 [PEER peer_6001] Connected to neighbour 127.0.0.1:6003
+19:12:36 [PEER peer_6001] Inbound HELLO from ('127.0.0.1', 6002)
+19:12:37 [PEER peer_6001] Inbound HELLO from ('127.0.0.1', 6003)
+19:12:39 [PEER peer_6001] Generated gossip #1: 1772113359.298725:127.0.0.1:1
+19:12:40 [PEER peer_6001] GOSSIP (first time): '1772113360.320891:127.0.0.1:1'  from 127.0.0.1:6002  ts=1772113360.322
+19:12:41 [PEER peer_6001] GOSSIP (first time): '1772113361.268063:127.0.0.1:1'  from 127.0.0.1:6003  ts=1772113361.269
+19:12:42 [PEER peer_6001] GOSSIP (first time): '1772113362.303278:127.0.0.1:1'  from 127.0.0.1:6004  ts=1772113362.304
+19:12:44 [PEER peer_6001] Generated gossip #2: 1772113364.302508:127.0.0.1:2
+19:12:45 [PEER peer_6001] GOSSIP (first time): '1772113365.322381:127.0.0.1:2'  from 127.0.0.1:6002  ts=1772113365.323
+19:12:46 [PEER peer_6001] GOSSIP (first time): '1772113366.269574:127.0.0.1:2'  from 127.0.0.1:6003  ts=1772113366.271
+19:12:47 [PEER peer_6001] GOSSIP (first time): '1772113367.305012:127.0.0.1:2'  from 127.0.0.1:6004  ts=1772113367.306
+19:12:49 [PEER peer_6001] Generated gossip #3: 1772113369.303899:127.0.0.1:3
+19:12:50 [PEER peer_6001] GOSSIP (first time): '1772113370.323665:127.0.0.1:3'  from 127.0.0.1:6002  ts=1772113370.324
+19:12:51 [PEER peer_6001] GOSSIP (first time): '1772113371.271438:127.0.0.1:3'  from 127.0.0.1:6003  ts=1772113371.272
+19:12:52 [PEER peer_6001] GOSSIP (first time): '1772113372.306610:127.0.0.1:3'  from 127.0.0.1:6004  ts=1772113372.308
+19:12:54 [PEER peer_6001] Generated gossip #4: 1772113374.308887:127.0.0.1:4
+19:12:55 [PEER peer_6001] GOSSIP (first time): '1772113375.324878:127.0.0.1:4'  from 127.0.0.1:6002  ts=1772113375.326
+19:12:56 [PEER peer_6001] GOSSIP (first time): '1772113376.272540:127.0.0.1:4'  from 127.0.0.1:6003  ts=1772113376.273
+19:12:57 [PEER peer_6001] GOSSIP (first time): '1772113377.307701:127.0.0.1:4'  from 127.0.0.1:6004  ts=1772113377.309
+19:12:59 [PEER peer_6001] Generated gossip #5: 1772113379.311646:127.0.0.1:5
+19:13:00 [PEER peer_6001] GOSSIP (first time): '1772113380.326553:127.0.0.1:5'  from 127.0.0.1:6002  ts=1772113380.328
+19:13:01 [PEER peer_6001] GOSSIP (first time): '1772113381.273509:127.0.0.1:5'  from 127.0.0.1:6003  ts=1772113381.274
+19:13:04 [PEER peer_6001] Generated gossip #6: 1772113384.312795:127.0.0.1:6
+19:13:05 [PEER peer_6001] GOSSIP (first time): '1772113385.329097:127.0.0.1:6'  from 127.0.0.1:6002  ts=1772113385.330
+19:13:06 [PEER peer_6001] GOSSIP (first time): '1772113386.274502:127.0.0.1:6'  from 127.0.0.1:6003  ts=1772113386.275
+19:13:09 [PEER peer_6001] Generated gossip #7: 1772113389.315118:127.0.0.1:7
+19:13:10 [PEER peer_6001] GOSSIP (first time): '1772113390.331035:127.0.0.1:7'  from 127.0.0.1:6002  ts=1772113390.332
+19:13:11 [PEER peer_6001] GOSSIP (first time): '1772113391.275853:127.0.0.1:7'  from 127.0.0.1:6003  ts=1772113391.277
+19:13:12 [PEER peer_6001] Lost connection to neighbour ('127.0.0.1', 6003)
+19:13:12 [PEER peer_6001] Lost inbound connection from ('127.0.0.1', 6003)
+19:13:12 [PEER peer_6001] SUSPICION started for ('127.0.0.1', 6003)
+19:13:13 [PEER peer_6001] Lost inbound connection from ('127.0.0.1', 6002)
+19:13:13 [PEER peer_6001] SUSPICION started for ('127.0.0.1', 6002)
+19:13:14 [PEER peer_6001] Generated gossip #8: 1772113394.316178:127.0.0.1:8

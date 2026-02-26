@@ -79,3 +79,11 @@
 01:12:48 [SEED seed_5010] Lost connection to seed 127.0.0.1:5012 â€” will retry
 01:12:56 [SEED seed_5010] Lost connection to seed 127.0.0.1:5011 â€” will retry
 01:13:04 [SEED seed_5010] Shutting down.
+19:12:09 [SEED seed_5010] Initialized  n_seeds=3  quorum=2
+19:12:09 [SEED seed_5010] Listening on 127.0.0.1:5010
+19:12:11 [SEED seed_5010] Dialled seed 127.0.0.1:5011
+19:12:11 [SEED seed_5010] Dialled seed 127.0.0.1:5012
+19:13:00 [SEED seed_5010] Synced removal of ('127.0.0.1', 6004) via DEAD_CONFIRMED from peer seed
+19:13:00 [SEED seed_5010] Synced removal of ('127.0.0.1', 6004) via DEAD_CONFIRMED from peer seed
+19:13:15 [SEED seed_5010] Lost connection to seed 127.0.0.1:5012 — will retry
+19:13:15 [SEED seed_5010] Lost connection to seed 127.0.0.1:5011 — will retry
